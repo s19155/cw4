@@ -13,6 +13,28 @@ namespace cw4.Controllers
     public class StudentsController : ControllerBase
     {
         private const string s = "Data Source=db-mssql;Initial Catalog=s19155;Integrated Security=True";
+//        insert into Student(IndexNumber, FirstName, LastName, BirthDate, IdEnrollment)
+//values('s19155', 'Olena', 'Lukaskchuk', '2001-01-16', 1),
+//		('s18456', 'Jan', 'Baka', '2000-08-19', 2),
+//		('s19105', 'Marcin', 'Polak', '1998-12-04', 3);
+
+//insert into Enrollment(IdEnrollment, Semester, IdStudy, StartDate)
+//values(1, 2, 1, '2018-10-12'),
+//		(2, 2, 1, '2018-10-16'),
+//		(3, 1, 1, '2019-10-12');
+
+//insert into Studies(IdStudy, Name)
+//values(1, 'Informatyka'),
+//		(2, 'Architektura wnetrz'),
+//		(3, 'Sztuka Nowych Mediow'),
+//		(4, 'Kultura Japonii'),
+//		(5, 'Zarzadzanie informacja');
+
+//select s.IndexNumber, s.FirstName, s.LastName, e.Semester, ss.Name
+//from student s, Enrollment e, Studies ss
+//where s.IdEnrollment = e.IdEnrollment and e.IdStudy = ss.IdStudy
+//and s.IndexNumber like 's19155';
+
         [HttpGet]
         public IActionResult GetStudents()
         {
@@ -52,8 +74,8 @@ namespace cw4.Controllers
                 sq.CommandText = "select s.IndexNumber, s.FirstName, s.LastName, e.Semester, ss.Name " +
                     "from student s, Enrollment e, Studies ss " +
                     "where s.IdEnrollment = e.IdEnrollment and e.IdStudy = ss.IdStudy " +
-                    "and s.IndexNumber = '" + IndexNumber + "'";
-
+                    "and s.IndexNumber = @index";
+                sq.Parameters.AddWithValue("index", IndexNumber);
                 sc.Open();
                 var sdd = sq.ExecuteReader();
                 if (sdd.Read())

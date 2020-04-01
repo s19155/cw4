@@ -56,8 +56,8 @@ namespace cw4.Controllers
                     st.IndexNumber = sd["IndexNumber"].ToString();
                     st.FirstName = sd["FirstName"].ToString();
                     st.LastName = sd["LastName"].ToString();
-                    st.Semestr = sd["Semester"].ToString();
-                    st.Studia = sd["Name"].ToString();
+                    //st.Semestr = sd["Semester"].ToString();
+                    //st.Studia = sd["Name"].ToString();
                     list.Add(st);
                 }
             }
@@ -84,8 +84,8 @@ namespace cw4.Controllers
                     st.IndexNumber = sdd["IndexNumber"].ToString();
                     st.FirstName = sdd["FirstName"].ToString();
                     st.LastName = sdd["LastName"].ToString();
-                    st.Semestr = sdd["Semester"].ToString();
-                    st.Studia = sdd["Name"].ToString();
+                    //st.Semestr = sdd["Semester"].ToString();
+                    //st.Studia = sdd["Name"].ToString();
                     return Ok(st);
                 }
             }

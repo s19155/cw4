@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using cw4.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -26,6 +27,7 @@ namespace cw4
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IdStudentDbService, SqlServerStudentService>();
             services.AddControllers();
 
             services.AddSwaggerGen(config =>
@@ -36,7 +38,7 @@ namespace cw4
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IdStudentDbService service)
         {
             if (env.IsDevelopment()) { 
                 app.UseDeveloperExceptionPage();
@@ -56,7 +58,14 @@ namespace cw4
                     await context.Response.WriteAsync("Gdzie numer indeksu?");
                     return;
                 }
-
+                string index = context.Request.Headers["Index"].ToString();
+                var student = service.GetStudent(index);
+                if(student == null)
+                {
+                    context.Response.StatusCode = StatusCodes.Status404NotFound;
+                    await context.Response.WriteAsync("Nie ma studenta o takim numerze indeksu");
+                    return;
+                }
                 await next();
             });
             app.UseRouting();
